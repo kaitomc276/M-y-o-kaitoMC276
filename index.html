@@ -332,6 +332,26 @@
 }
 
 
+/* Popup báo mạng yếu */
+#networkPopup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #ffccd5; /* nền hồng đặc che hết màn hình */
+  color: #b30021;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 40vh;
+  z-index: 20000;
+  animation: shake 0.5s infinite alternate;
+}
+
+@keyframes shake {
+  from { transform: translateX(-5px); }
+  to   { transform: translateX(5px); }
+}
 
 
   </style></head><body><div class="action-buttons">
@@ -435,3 +455,40 @@
 
       const distance = Math.abs(screenCenter - containerCenter);
       if (distance < re
+
+</script>
+</body>
+<div id="networkPopup">
+  🚨 Kết nối mạng yếu hoặc mất mạng! 🚨<br>
+  Vui lòng kiểm tra lại internet của bạn.
+</div>
+
+<script>
+function showNetworkPopup() {
+  document.getElementById("networkPopup").style.display = "block";
+}
+function hideNetworkPopup() {
+  document.getElementById("networkPopup").style.display = "none";
+}
+
+window.addEventListener('offline', showNetworkPopup);
+window.addEventListener('online', hideNetworkPopup);
+
+setInterval(() => {
+  const start = Date.now();
+  fetch("https://www.google.com/favicon.ico", {mode: "no-cors"})
+    .then(() => {
+      const delay = Date.now() - start;
+      if (delay > 3000) {
+        showNetworkPopup();
+      } else {
+        hideNetworkPopup();
+      }
+    })
+    .catch(showNetworkPopup);
+}, 15000);
+</script>
+
+</script>
+
+</html>
